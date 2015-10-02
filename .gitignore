@@ -1,0 +1,3 @@
+*.py[co]
+# Mac specific files
+.DS_Store
