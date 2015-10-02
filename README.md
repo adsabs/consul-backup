@@ -28,4 +28,16 @@ to
 
     mc/templates/docker/cron/adsws/cronjob.sh
 
-in "Mission Control" and update `manage.py` of `adsws` to support this functionality.
+in "Mission Control" and update `manage.py` to support this functionality. In this case we would have something like
+
+	consul = consulate.Consul()
+
+	# Get all of the service checks for the local agent
+	checks = consul.agent.checks()
+	# 
+    records = consul.kv.records()
+	handle = open(backup_file, 'w')
+    try:
+        handle.write(json.dumps(records) + '\n')
+    except exceptions.ConnectionError:
+        connection_error()
