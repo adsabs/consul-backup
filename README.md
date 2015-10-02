@@ -28,4 +28,4 @@ to
 
     mc/templates/docker/cron/adsws/cronjob.sh
 
-in "Mission Control" and update `manage.py` to support this functionality.
+in "Mission Control" and update `manage.py` of `adsws` to support this functionality.
