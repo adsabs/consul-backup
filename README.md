@@ -19,25 +19,3 @@ In the case of restoring an existing backup, we need info to identify the backup
 where the restore ID is determined by the naming scheme used for creating backup files. So, restoring an existing backup would involve going into the S3 bucket and visually inspect which backup you want restored.
 
 NOTE: apparently, the JSON for an AWS ECS Task Definition also supports a key "environment" where environment variables can be defined that will get set in the container.
-
-An alternative approach to creating backups could perhaps be to add an entry
-
-    0 0 * * * bash -l -c 'python /app/adsws/manage.py consul backup' >> /tmp/cron.log 2>&1
-
-to
-
-    mc/templates/docker/cron/adsws/cronjob.sh
-
-in "Mission Control" and update `manage.py` to support this functionality. In this case we would have something like
-
-	consul = consulate.Consul()
-
-	# Get all of the service checks for the local agent
-	checks = consul.agent.checks()
-	# 
-    records = consul.kv.records()
-	handle = open(backup_file, 'w')
-    try:
-        handle.write(json.dumps(records) + '\n')
-    except exceptions.ConnectionError:
-        connection_error()
