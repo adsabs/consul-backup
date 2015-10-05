@@ -6,8 +6,8 @@ if [[ -z "$S3_BACKUP_FOLDER" ]] ; then
 fi
 # Check whether necessary environment variables have been set to a non-empty value
 # If not, fall back to default values
-if [[ -z "$CONSUL_SERVER" ]] ; then
-    CONSUL_SERVER="localhost"
+if [[ -z "$CONSUL_HOST" ]] ; then
+    CONSUL_HOST="localhost"
 fi
 
 if [[ -z "$CONSUL_PORT" ]] ; then
@@ -26,14 +26,14 @@ if [ $ACTION = "restore" ]; then
     fi
 fi
 # Register the Consul client with the server
-consulate register -a $CONSUL_SERVER -p $CONSUL_PORT consul_client no-check
+consulate register -a $CONSUL_HOST -p $CONSUL_PORT consul_client no-check
 # Now take the appropriate action depending on the value of the ACTION variable
 if [ $ACTION = "backup" ]; then
     # Get today's date for time stamp
     now="$(date +'%d%m%Y')"
     # Do backup
     backup_file="adsabs_consul_kv.$now.json"
-    echo "Making backup of Consul key/value store from $CONSUL_SERVER"
+    echo "Making backup of Consul key/value store from $CONSUL_HOST"
     echo "Backup is written to: $backup_file"
     consulate kv backup > $backup_file
     # Move backup to S3
