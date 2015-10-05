@@ -18,4 +18,37 @@ In the case of restoring an existing backup, we need info to identify the backup
     
 where the restore ID is determined by the naming scheme used for creating backup files. So, restoring an existing backup would involve going into the S3 bucket and visually inspect which backup you want restored.
 
-NOTE: apparently, the JSON for an AWS ECS Task Definition also supports a key "environment" where environment variables can be defined that will get set in the container.
+The Task Definition for the backup of the Consul key/value store would then be
+
+	{
+	  "containerDefinitions": [
+	    {
+	      "name": "consul-backup",
+	      "image": "adsabs/consul-backup",
+	      "cpu": 384,
+	      "memory": 384,
+	      "essential": true,
+	      "environment": []
+	    }
+	  ],
+	  "family": "consul-backup"
+	}
+
+and for restoring a backup with identifier `restore_ID` the Task Definition would be
+
+	{
+	  "containerDefinitions": [
+	    {
+	      "name": "consul-backup",
+	      "image": "adsabs/consul-backup",
+	      "cpu": 384,
+	      "memory": 384,
+	      "essential": true,
+	      "environment": [
+			{ "name": "ACTION", "value": "restore" },
+			{ "name": "RESTORE_ID", "value": "restore_ID" },
+	      ]
+	    }
+	  ],
+	  "family": "consul-backup"
+	}
