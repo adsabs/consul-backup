@@ -26,6 +26,7 @@ if [ $ACTION = "restore" ]; then
     fi
 fi
 # Register the Consul client with the server
+echo "Registering consulate with $CONSUL_HOST on port $CONSUL_PORT"
 consulate register -a $CONSUL_HOST -p $CONSUL_PORT consul_client no-check
 # Now take the appropriate action depending on the value of the ACTION variable
 if [ $ACTION = "backup" ]; then
