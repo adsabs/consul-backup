@@ -14,4 +14,4 @@ ADD ./run.sh /scripts/run.sh
 # Set shell to bash
 ENV SHELL /bin/bash
 # Execute the script performing the operation (depending on environment variables)
-CMD cd /scripts && ./run.sh &> /tmp/consul-backup.log
+CMD cd /scripts && ./run.sh
