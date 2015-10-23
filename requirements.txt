@@ -1,0 +1,6 @@
+unittest
+requests
+json
+boto3
+moto
+consulate

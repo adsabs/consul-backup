@@ -10,9 +10,8 @@ ENV S3_BACKUP_FOLDER="adsabs-consul-backups"
 # Install Consul client
 RUN pip install consulate
 # The bash scripts for backup and restore
-ADD ./run.sh /scripts/run.sh
-RUN chmod +x /scripts/run.sh
+ADD ./backup.py /scripts/backup.py
 # Set shell to bash
 ENV SHELL /bin/bash
 # Execute the script performing the operation (depending on environment variables)
-CMD cd /scripts && ./run.sh
+CMD python scripts/backup.py
