@@ -18,19 +18,22 @@ So, restoring an existing backup would involve going into the S3 bucket and visu
 
 In terms of executing the backup in an ECS container, we define both actions in terms of Task Definitions. The Task Definition for the backup of the Consul key/value store would then be
 
-	{
-	  "containerDefinitions": [
-	    {
-	      "name": "consul-backup",
-	      "image": "adsabs/consul-backup",
-	      "cpu": 384,
-	      "memory": 384,
-	      "essential": true,
-	      "environment": []
-	    }
-	  ],
-	  "family": "consul-backup"
-	}
+        {
+          "containerDefinitions": [
+            {
+              "name": "consul-backup",
+              "image": "adsabs/consul-backup",
+              "cpu": 384,
+              "memory": 384,
+              "essential": true,
+              "environment": [
+                        { "name": "AWS_ACCESS_KEY", "value": "very secret" },
+                        { "name": "AWS_SECRET_KEY", "value": "also very secret" },
+              ]
+            }
+          ],
+          "family": "consul-backup"
+        }
 
 and for restoring a backup with identifier `restore_ID` the Task Definition would be
 
@@ -43,6 +46,8 @@ and for restoring a backup with identifier `restore_ID` the Task Definition woul
 	      "memory": 384,
 	      "essential": true,
 	      "environment": [
+                        { "name": "AWS_ACCESS_KEY", "value": "very secret" },
+                        { "name": "AWS_SECRET_KEY", "value": "also very secret" },
 			{ "name": "ACTION", "value": "restore" },
 			{ "name": "RESTORE_ID", "value": "restore_ID" },
 	      ]
@@ -59,4 +64,6 @@ followed by
 
     python mc/manage.py update_service --cluster staging --service consul-backup --desiredCount 1 --taskDefinition consul-backup
 
-to execute the task.
+to execute the task. By default logs and temporary files are created in `/tmp`; this can be overwritten by setting the environment variable `TMD_DIR` appropriately.
+
+Note: storing the AWS secret keys is not necessary if uploading/downloading to/from S3 happens with shell commands, using the `aws` shell utility. But that would make testing a lot harder.
