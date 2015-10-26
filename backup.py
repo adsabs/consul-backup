@@ -10,20 +10,15 @@ from utils import get_s3_resource
 from utils import s3_upload_file
 from utils import s3_download_file
 
+# We don't need the actual keys here with the proper IAM in place
+aws_access_key = "secret key"
+aws_secret_key = "very secret key"
+aws_region     = "us-east-1"
 # Configure logging
 LOG_FILENAME = '/tmp/consul_backup.log'
 logging.basicConfig(filename=LOG_FILENAME,
                     level=logging.INFO,
                     )
-# First check if we have the proper credentials for uploading
-# backups to S3
-aws_access_key = os.environ.get('AWS_ACCESS_KEY')
-aws_secret_key = os.environ.get('AWS_SECRET_KEY')
-aws_region     = os.environ.get('AWS_REGION','us-east-1')
-# Both keys much exist
-if not aws_access_key and not aws_secret_key:
-    logging.error("No AWS credentials were specified. Cannot do backup! Exiting...")
-    sys.exit(2)
 # Check if the name of the backup folder on S3 was specified,
 # otherwise exit
 backup_folder = os.environ.get('S3_BACKUP_FOLDER')

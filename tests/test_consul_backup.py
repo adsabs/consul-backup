@@ -1,5 +1,8 @@
 import os
 import sys
+PROJECT_HOME = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../'))
+sys.path.append(PROJECT_HOME)
 import shutil
 import filecmp
 import unittest
@@ -12,10 +15,14 @@ from moto import mock_s3
 test_data = {'key1':'value1', 'key2':'value2', 'key3':'value3'}
 # Name for backup bucket on mocked S3 instance
 S3_bucket = 'backup'
+# Scripts for settting up/tearing down Consul cluster
+test_dir = os.path.dirname(os.path.realpath(__file__))
+setup_script = "%s/setup_consul.sh" % test_dir
+teardown_script = "%s/cleanup_consul.sh" % test_dir
 
 def setUpModule():
     'set up Consul cluster'
-    p = subprocess.Popen(["setup_consul.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen([setup_script], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     out, err = p.communicate()
     if err:
@@ -23,7 +30,7 @@ def setUpModule():
 
 def tearDownModule():
     'clean up Consul cluster: stop and remove Docker containers'
-    p = subprocess.Popen(["cleanup_consul.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen([teardown_script], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     p.wait()
     out, err = p.communicate()
     if err:
