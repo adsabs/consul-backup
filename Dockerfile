@@ -12,6 +12,8 @@ RUN pip install consulate
 # The bash scripts for backup and restore
 ADD ./backup.py /scripts/backup.py
 ADD ./utils.py /scripts/utils.py
+ADD ./requirements.txt /requirements.txt
+RUN pip install -r requirements.txt
 # Set shell to bash
 ENV SHELL /bin/bash
 # Execute the script performing the operation (depending on environment variables)

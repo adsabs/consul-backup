@@ -1,6 +1,11 @@
+### 1.0.3
+
+* Dockerfile fix (install requirements)
+
 ### 1.0.2
 
 * Fix for Github issue 15 (copy utils.py over into Docker image)
+
 ### 1.0.1
 
 * Replaced bash (backup/restore) script by Python script
