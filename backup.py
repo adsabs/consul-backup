@@ -10,10 +10,6 @@ from utils import get_s3_resource
 from utils import s3_upload_file
 from utils import s3_download_file
 
-# We don't need the actual keys here with the proper IAM in place
-aws_access_key = "secret key"
-aws_secret_key = "very secret key"
-aws_region     = "us-east-1"
 # Configure logging
 LOG_FILENAME = '/tmp/consul_backup.log'
 logging.basicConfig(filename=LOG_FILENAME,
@@ -80,7 +76,7 @@ if action == 'backup':
         sys.exit(2)
     logging.info('Backup was written to: %s'%backup_file)     
     # Now copy the backup to S3
-    s3 = get_s3_resource(aws_access_key,aws_secret_key,aws_region)
+    s3 = get_s3_resource()
     try:
         s3_upload_file(s3, backup_file, backup_folder)
     except Exception, e:
@@ -92,7 +88,7 @@ elif action == 'restore':
     # Construct the name of the backup file to retrieve
     backup_file = '%s/adsabs_consul_kv.%s.json' % (tmp_dir,restore_id)
     # Get the file from S3
-    s3 = get_s3_resource(aws_access_key,aws_secret_key,aws_region)
+    s3 = get_s3_resource()
     try:
         s3_download_file(s3, backup_file, backup_folder)
     except Exception, e:
