@@ -1,3 +1,7 @@
+### 1.0.5
+
+* Connection to S3 via "boto3.resource('s3')" (no keys supplied)
+
 ### 1.0.4
 
 * Fixed typo in backup.py
