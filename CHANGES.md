@@ -2,6 +2,7 @@
 
 * Replaced bash (backup/restore) script by Python script
 * Implemented unittesting
+* Added Travis config file (Travis seemsto prefer Docker containers to be set up through Travis file, rather than in unit test itself)
 
 ### 1.0.0
 
