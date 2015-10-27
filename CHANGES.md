@@ -1,3 +1,7 @@
+### 1.0.4
+
+* Fixed typo in backup.py
+
 ### 1.0.3
 
 * Dockerfile fix (install requirements)
