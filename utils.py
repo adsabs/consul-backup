@@ -35,7 +35,7 @@ def save_records(records, target):
     handle = open(target, 'w')
     handle.write(json.dumps(records) + '\n')
 
-def get_s3_resource(access_key, secret_key, region):
+def get_s3_resource():
     return boto3.resource('s3') 
 
 def s3_upload_file(s3_resource, backup_file, backup_bucket):
