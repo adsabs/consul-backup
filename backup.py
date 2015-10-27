@@ -33,7 +33,7 @@ if not consul_host:
     consul_host = 'localhost'
 consul_port = os.environ.get('CONSUL_PORT')
 if not consul_port:
-    consul_host = '8500'
+    consul_port = '8500'
 # Directory to locally store backup file (temporarily)
 tmp_dir = os.environ.get('TMP_DIR','/tmp')
 # If no action was specified, the default action is backup
