@@ -1,3 +1,7 @@
+### 1.0.6
+
+* bug fix: the S3 connection method still had its parameters
+
 ### 1.0.5
 
 * Connection to S3 via "boto3.resource('s3')" (no keys supplied)
