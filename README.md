@@ -10,6 +10,7 @@ In the case of restoring an existing backup, we need info to identify the backup
 
     ACTION="restore"
     RESTORE_ID="restore_id"
+    OVERWRITE=True (Optional, if you want to overwrite existing values)
     
 where the restore ID is determined by the naming scheme used for creating backup files.
 Assuming these variables are set in a file `env`, you would execute
@@ -62,3 +63,5 @@ followed by
     python mc/manage.py update_service --cluster staging --service consul-backup --desiredCount 1 --taskDefinition consul-backup
 
 to execute the task. By default logs and temporary files are created in `/tmp`; this can be overwritten by setting the environment variable `TMD_DIR` appropriately.
+
+Also, by default, key/value pairs are restored if they are not present in the current store. In order to restore the entire backup the environment variable OVERWRITE has to be set to True.

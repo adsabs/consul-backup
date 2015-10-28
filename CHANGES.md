@@ -1,3 +1,8 @@
+### 1.0.7
+
+* Restore now supports "overwrite" mode
+* Unittest test for "overwrite" mode
+
 ### 1.0.6
 
 * bug fix: the S3 connection method still had its parameters
