@@ -43,6 +43,8 @@ if action == 'restore':
     if not restore_id:
         logging.error('Restore was requested, but no RESTORE_ID was set!')
         sys.exit(2)
+    # See if we are in "overwrite" mode
+    overwrite = os.environ.get('OVERWRITE',False)
 # Register the Consul client with the server
 logging.info("Registering consulate with %s on port %s"%(consul_host, consul_port))
 try:
@@ -96,7 +98,7 @@ elif action == 'restore':
         sys.exit(2)
     # Now do the restore
     try:
-        consul_restore_from_backup(session, backup_file)
+        consul_restore_from_backup(session, backup_file, overwrite)
     except Exception, e:
         logging.error('Failed restoring Consul key/value store: %s'%e)
         sys.exit(2)

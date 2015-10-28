@@ -16,7 +16,7 @@ def get_consul_session(host, port):
 def get_records_from_consul(session):
     return session.kv.records()
 
-def consul_restore_from_backup(session, backup):
+def consul_restore_from_backup(session, backup, force):
     handle = open(backup, 'r')
     data = json.load(handle)
     for row in data:
@@ -29,7 +29,7 @@ def consul_restore_from_backup(session, backup):
         # source: https://github.com/gmr/consulate/blob/master/consulate/cli.py#L312
         if not PYTHON3 and isinstance(row[2], unicode):
             row[2] = row[2].encode('utf-8')
-        session.kv.set_record(row[0], row[1], row[2])
+        session.kv.set_record(row[0], row[1], row[2], force)
         
 def save_records(records, target):
     handle = open(target, 'w')

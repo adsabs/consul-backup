@@ -101,12 +101,24 @@ class TestConsulBackup(unittest.TestCase):
         # of length 3
         self.assertEqual(len(peers), 3)
         # Restore from backup and then test querying URL
-        consul_restore_from_backup(session, backup_file)
+        consul_restore_from_backup(session, backup_file, False)
         # Get the records from Consul
         records = get_records_from_consul(session)
         # and check whether they are what we expect
         expected_records = '[["key1", 0, "value1"], ["key2", 0, "value2"], ["key3", 0, "value3"]]'
         self.assertEqual(json.dumps(records), expected_records)
+        # Now we "accidentally" change one of the key/value pairs in the store
+        session.kv.set("key1","oops")
+        # First check that this actually happened
+        self.assertEqual(session.kv.get("key1"), "oops")
+        # Now perform a restore without overwriting records
+        consul_restore_from_backup(session, backup_file, False)
+        # The "accidental" change should still be there
+        self.assertEqual(session.kv.get("key1"), "oops")
+        # Now perform the restore, allowing overwriting records
+        consul_restore_from_backup(session, backup_file, True)
+        # Now the value from the backup should have overwritten the "accidental" one
+        self.assertEqual(session.kv.get("key1"), "value1")
 
     def test_S3_communication(self):
         'test downloading/uploading from/to S3'
