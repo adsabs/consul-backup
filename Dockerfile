@@ -7,6 +7,7 @@ RUN pip install --upgrade pip
 # Set some environment variables
 ENV CONSUL_HOST="consul.adsabs"
 ENV S3_BACKUP_FOLDER="adsabs-consul-backups"
+ENV BACKUP_FILE='adsabs_consul_kv'
 # Install Consul client
 RUN pip install consulate
 # The bash scripts for backup and restore

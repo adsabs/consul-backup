@@ -63,7 +63,9 @@ if action == 'backup':
     # Get today's date for the time stamp
     now = str(datetime.datetime.now().date())
     # Construct the name of the backup file
-    backup_file = '%s/adsabs_consul_kv.%s.json' % (tmp_dir,now)
+    fname = os.environ.get('BACKUP_FILE','adsabs_consul_kv')
+    version = os.environ.get('VERSION',now)
+    backup_file = '%s/%s.%s.json' % (tmp_dir,fname,version)
     # Get the records from the Consul key/value store
     try:
         records = get_records_from_consul(session)
@@ -88,7 +90,8 @@ if action == 'backup':
     os.remove(backup_file)
 elif action == 'restore':
     # Construct the name of the backup file to retrieve
-    backup_file = '%s/adsabs_consul_kv.%s.json' % (tmp_dir,restore_id)
+    fname = os.environ.get('BACKUP_FILE','adsabs_consul_kv')
+    backup_file = '%s/%s.%s.json' % (tmp_dir,fname,restore_id)
     # Get the file from S3
     s3 = get_s3_resource()
     try:
