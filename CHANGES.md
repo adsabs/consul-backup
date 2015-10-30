@@ -1,3 +1,7 @@
+### 1.0.8
+
+* Make name backup file configurable
+
 ### 1.0.7
 
 * Restore now supports "overwrite" mode
